@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace BiaORM
 {
-    public class Class1
+    interface IConnector
     {
+        void Initialize();
+        T Query<T>(string cmd);
     }
 }
