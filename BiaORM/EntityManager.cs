@@ -10,6 +10,30 @@ namespace BiaORM
 {
     public class EntityManager
     {
+        public T CreateOne<T>(DataTable dataTable, QueryTypes queryType)
+        {
+            T obj = Activator.CreateInstance<T>();
+
+            foreach (var p in obj.GetType().GetProperties().Where(p => !p.GetGetMethod().GetParameters().Any()))
+            {
+                if (p != null && p.CanWrite)
+                {
+                    string name = p.Name;
+
+                    Attribute[] attributes = Attribute.GetCustomAttributes(p);
+
+                    if (!Attribute.IsDefined(p, typeof(AttIgnoreField)))
+                    {
+                        if (dataTable.Rows[0][p.Name] != DBNull.Value)
+                        {
+                            p.SetValue(obj, dataTable.Rows[0][p.Name]);
+                        }
+                    }
+                }
+            }
+
+            return obj;
+        }
         public List<T> CreateList<T>(DataTable dataTable, QueryTypes queryType)
         {
             List<T> list = Activator.CreateInstance<List<T>>();
@@ -25,15 +49,17 @@ namespace BiaORM
                         string name = p.Name;
 
                         Attribute[] attributes = Attribute.GetCustomAttributes(p);
-                        
-
-
 
                         if (!Attribute.IsDefined(p, typeof(AttIgnoreField)))
                         {
-                            list.Add(obj);
+                            if (dataTable.Rows[0][p.Name] != DBNull.Value)
+                            {
+                                p.SetValue(obj, dataTable.Rows[i][p.Name]);
+                            }
                         }
                     }
+
+                    list.Add(obj);
                 }
             }
 

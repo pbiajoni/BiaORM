@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace BiaORM
 {
-    interface IConnector
+    public interface IConnector
     {
         void Initialize();
-        void Connect();
         DataTable Select(string cmdSQL);
         void Commit();
         void CloseConnection();

@@ -25,6 +25,10 @@ namespace BiaORM.MySQL
 
         }
 
+        public MyConnection(string connectionString)
+        {
+            this._connectionString = connectionString;
+        }
         public MyConnection(string username, string password, string server, string database)
         {
             Username = username ?? throw new ArgumentNullException(nameof(username));
@@ -60,21 +64,24 @@ namespace BiaORM.MySQL
 
             return cmd;
         }
-        public void Connect()
-        {
-            throw new NotImplementedException();
-        }
 
         public void Initialize()
         {
-            string include = "";
-
-            if (this.IncludeSecurityAsserts)
+            if (String.IsNullOrEmpty(this._connectionString))
             {
-                include = ",includesecurityassets=True";
-            }
+                string include = "";
 
-            this._connectionString = String.Format(@"allow zero datetime=false;allow user variables=true;Connect Timeout=30;SERVER={0};PORT={1};UID={2};PASSWORD={3};DATABASE={4}{5};", Server, Port, Username, Password, Database, include);
+                if (this.IncludeSecurityAsserts)
+                {
+                    include = ",includesecurityassets=True";
+                }
+
+                this._connectionString = String.Format(@"allow zero datetime=false;allow user variables=true;Connect Timeout=30;SERVER={0};PORT={1};UID={2};PASSWORD={3};DATABASE={4}{5};", Server, Port, Username, Password, Database, include);
+            }
+            else
+            {
+                throw new Exception("The connection string is already initialized");
+            }
         }
 
         public DataTable Select(string cmdSQL)

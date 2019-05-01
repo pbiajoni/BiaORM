@@ -13,6 +13,7 @@ namespace BiaORM.Clauses
         public string FieldName { get; set; }
         public string Value { get; set; }
         public bool UseParentheses { get; set; }
+        public bool QuotationMark { get; set; }
         public string Query
         {
             get
@@ -21,22 +22,22 @@ namespace BiaORM.Clauses
                 switch (this.OperatorType)
                 {
                     case OperatorTypes.Equal:
-                        query = " " + this.FieldName + " = " + Value + " ";
+                        query = " " + this.FieldName + " =" + (this.QuotationMark ? " '" + Value + "' " : " " + Value + " ");
                         break;
                     case OperatorTypes.Like:
-                        query = " " + this.FieldName + " like %" + Value + "% ";
+                        query = " " + this.FieldName + " like '%" + Value + "%' ";
                         break;
                     case OperatorTypes.BiggerThan:
-                        query = " " + this.FieldName + " > " + Value + " ";
+                        query = " " + this.FieldName + " >" + (this.QuotationMark ? " '" + Value + "' " : " " + Value + " ");
                         break;
                     case OperatorTypes.SmallerThan:
-                        query = " " + this.FieldName + " < " + Value + " ";
+                        query = " " + this.FieldName + " <" + (this.QuotationMark ? " '" + Value + "' " : " " + Value + " ");
                         break;
                     case OperatorTypes.StartsWith:
-                        query = " " + this.FieldName + " like %" + Value + " ";
+                        query = " " + this.FieldName + " like '%" + Value + "' ";
                         break;
                     case OperatorTypes.EndsWith:
-                        query = " " + this.FieldName + " like " + Value + "% ";
+                        query = " " + this.FieldName + " like '" + Value + "%' ";
                         break;
                     default:
                         throw new Exception("Operator type is missing");
@@ -61,29 +62,32 @@ namespace BiaORM.Clauses
 
         }
 
-        public Where(OperatorTypes operatorType, string fieldName, string value)
+        public Where(OperatorTypes operatorType, string fieldName, string value, bool quotationMark = true)
         {
             OperatorType = operatorType;
-            ConcatenatorType = ConcatenatorTypes.And;
+            ConcatenatorType = ConcatenatorTypes.None;
             FieldName = fieldName ?? throw new ArgumentNullException(nameof(fieldName));
             Value = value ?? throw new ArgumentNullException(nameof(value));
+            QuotationMark = quotationMark;
         }
 
-        public Where(ConcatenatorTypes concatenatorType, OperatorTypes operatorType, string fieldName, string value)
+        public Where(ConcatenatorTypes concatenatorType, OperatorTypes operatorType, string fieldName, string value, bool quotationMark = true)
         {
             OperatorType = operatorType;
             ConcatenatorType = concatenatorType;
             FieldName = fieldName ?? throw new ArgumentNullException(nameof(fieldName));
             Value = value ?? throw new ArgumentNullException(nameof(value));
+            QuotationMark = quotationMark;
         }
 
-        public Where(ConcatenatorTypes concatenatorType, bool useParentheses, OperatorTypes operatorType, string fieldName, string value)
+        public Where(ConcatenatorTypes concatenatorType, bool useParentheses, OperatorTypes operatorType, string fieldName, string value, bool quotationMark = true)
         {
             OperatorType = operatorType;
             ConcatenatorType = concatenatorType;
             UseParentheses = useParentheses;
             FieldName = fieldName ?? throw new ArgumentNullException(nameof(fieldName));
             Value = value ?? throw new ArgumentNullException(nameof(value));
+            QuotationMark = quotationMark;
         }
     }
 }

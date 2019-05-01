@@ -60,6 +60,7 @@
     <Compile Include="IConnector.cs" />
     <Compile Include="Attributes\AttIgnoreField.cs" />
     <Compile Include="ITable.cs" />
+    <Compile Include="MsSQL\MsConnector.cs" />
     <Compile Include="MySQL\Error.cs" />
     <Compile Include="MySQL\ErrorsList.cs" />
     <Compile Include="MySQL\Extensions.cs" />

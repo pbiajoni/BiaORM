@@ -70,28 +70,24 @@ namespace BiaORM.MySQL
         public T FindOne<T>(List<Where> clauses)
         {
             string str_where = "";
-            bool first = true;
 
-            foreach(Where where in clauses)
+            foreach (Where where in clauses)
             {
                 string query = where.Query;
+                str_where += query;
+            }
 
-                if (first)
-                {
-                    if (where.UseParentheses)
-                    {
-                        
-                    }
-                }
-                else
-                {
+            string cmd = "select * from " + this._tableName + " where " + str_where + " limit 1;";
+            DataTable dt = MySQLConnection.Select(cmd);
 
-                }    
+            if (dt.Rows.Count > 0)
+            {
+                return entityManager.CreateOne<T>(dt, QueryTypes.SELECT);
             }
 
 
-            T obj = Activator.CreateInstance<T>();
-            return obj;
+            return default(T);
+
         }
 
         public bool FieldExists(string name)
