@@ -63,6 +63,7 @@
     <Compile Include="ITable.cs" />
     <Compile Include="MySQL\Error.cs" />
     <Compile Include="MySQL\ErrorsList.cs" />
+    <Compile Include="MySQL\Field.cs" />
     <Compile Include="MySQL\MyConnection.cs" />
     <Compile Include="MySQL\Table.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
