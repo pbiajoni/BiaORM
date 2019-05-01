@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -60,6 +61,8 @@
   <ItemGroup>
     <Compile Include="IConnector.cs" />
     <Compile Include="ITable.cs" />
+    <Compile Include="MySQL\Error.cs" />
+    <Compile Include="MySQL\ErrorsList.cs" />
     <Compile Include="MySQL\MyConnection.cs" />
     <Compile Include="MySQL\Table.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
