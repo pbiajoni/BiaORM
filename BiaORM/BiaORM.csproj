@@ -53,10 +53,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\AttEncrypt.cs" />
+    <Compile Include="Clauses\Where.cs" />
+    <Compile Include="EntityManager.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="IConnector.cs" />
+    <Compile Include="Attributes\AttIgnoreField.cs" />
     <Compile Include="ITable.cs" />
     <Compile Include="MySQL\Error.cs" />
     <Compile Include="MySQL\ErrorsList.cs" />
+    <Compile Include="MySQL\Extensions.cs" />
     <Compile Include="MySQL\Field.cs" />
     <Compile Include="MySQL\MyConnection.cs" />
     <Compile Include="MySQL\Table.cs" />

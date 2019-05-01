@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BiaORM.Clauses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,9 +52,55 @@ namespace BiaORM.MySQL
             }
         }
 
-        public void AddField(string vame, string value)
+        public T FindOne<T>(int id)
         {
-            throw new NotImplementedException();
+            Where where = new Where(OperatorTypes.Equal, "id", id.ToString());
+            return this.FindOne<T>(where);
+        }
+
+        public T FindOne<T>(Where where)
+        {
+            List<Where> wheres = new List<Where>();
+            wheres.Add(where);
+            return this.FindOne<T>(wheres);
+        }
+
+        public T FindOne<T>(List<Where> clauses)
+        {
+            T obj = Activator.CreateInstance<T>();
+            return obj;
+        }
+
+        public bool FieldExists(string name)
+        {
+            return this.Fields.Any(x => x.Name == name);
+        }
+
+        public void AddField(string name, DateTime dateTime)
+        {
+            string date = dateTime.ToDBFormat();
+            this.AddField(name, date);
+        }
+
+        public void AddField(string name, decimal value)
+        {
+            string decimalValue = value.ToDB();
+            this.AddField(name, decimalValue);
+        }
+
+        public void AddField(string name, string value)
+        {
+            this.AddField(new Field(name, value));
+        }
+
+        public void AddField(Field field)
+        {
+            if (this.FieldExists(field.Name))
+            {
+                throw new Exception("O campo " + field.Name + " já existe");
+            }
+
+            this.Fields.Add(field);
         }
     }
 }
