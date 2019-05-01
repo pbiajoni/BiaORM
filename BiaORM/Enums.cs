@@ -28,4 +28,11 @@ namespace BiaORM
         StartsWith = 4,
         EndsWith = 5
     }
+
+    public enum ConcatenatorTypes
+    {
+        None = 0,
+        Or = 1,
+        And = 2
+    }
 }

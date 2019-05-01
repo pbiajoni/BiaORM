@@ -1,6 +1,7 @@
 ﻿using BiaORM.Clauses;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace BiaORM.MySQL
 {
     public class Table : ITable
     {
+        EntityManager entityManager = new EntityManager();
         string _tableName;
         public string TableName { get { return this._tableName; } set { this._tableName = value; } }
         public List<Field> Fields { get; internal set; }
@@ -67,6 +69,27 @@ namespace BiaORM.MySQL
 
         public T FindOne<T>(List<Where> clauses)
         {
+            string str_where = "";
+            bool first = true;
+
+            foreach(Where where in clauses)
+            {
+                string query = where.Query;
+
+                if (first)
+                {
+                    if (where.UseParentheses)
+                    {
+                        
+                    }
+                }
+                else
+                {
+
+                }    
+            }
+
+
             T obj = Activator.CreateInstance<T>();
             return obj;
         }
