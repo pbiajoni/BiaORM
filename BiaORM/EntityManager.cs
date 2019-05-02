@@ -12,28 +12,27 @@ namespace BiaORM
     public class EntityManager
     {
 
-        public string GetPkValue<T>(string pk)
+        public string GetPkValue<T>(string pkName, T entity)
         {
-            T obj = Activator.CreateInstance<T>();
-            foreach (var p in obj.GetType().GetProperties().Where(p => !p.GetGetMethod().GetParameters().Any()))
+            foreach (var p in entity.GetType().GetProperties().Where(p => !p.GetGetMethod().GetParameters().Any()))
             {
-                if (p.Name.ToLower() == pk.ToLower())
+                if (p.Name.ToLower() == pkName.ToLower())
                 {
-                    return p.GetValue(p).ToString();
+                    var value = p.GetValue(entity, null);
+                    return value.ToString();
                 }
             }
 
             return null;
         }
 
-        public string UpdateQuery<T>(string tableName, string pk)
+        public string UpdateQuery<T>(string tableName, string pkName, T entity)
         {
             string cmd = "update " + tableName + " set ";
-            T obj = Activator.CreateInstance<T>();
 
-            foreach (var p in obj.GetType().GetProperties().Where(p => !p.GetGetMethod().GetParameters().Any()))
+            foreach (var p in entity.GetType().GetProperties().Where(p => !p.GetGetMethod().GetParameters().Any()))
             {
-                if (p != null && p.CanRead)
+                if ((p != null && p.CanRead) && (p.Name.ToLower() != pkName.ToLower()))
                 {
                     bool ignore = false;
 
@@ -47,7 +46,7 @@ namespace BiaORM
 
                     if (!ignore)
                     {
-                        string piValue = p.GetValue(p).ToString();
+                        string piValue = p.GetValue(entity, null).ToString();
 
                         if (Attribute.IsDefined(p, typeof(AttEncrypt)))
                         {
@@ -66,19 +65,18 @@ namespace BiaORM
                 }
             }
 
-            cmd = cmd.TrimEnd(',') + " where " + pk + " = '" + GetPkValue<T>(pk) + "';";
+            cmd = cmd.TrimEnd(',') + " where " + pkName + " = '" + GetPkValue<T>(pkName, entity) + "';";
             return cmd;
         }
-        public string InsertQuery<T>(string tableName)
+        public string InsertQuery<T>(string tableName, string pkName, T entity)
         {
             string cmd = "insert into " + tableName + " (";
-            T obj = Activator.CreateInstance<T>();
             string fields = "";
             string values = "";
 
-            foreach (var p in obj.GetType().GetProperties().Where(p => !p.GetGetMethod().GetParameters().Any()))
+            foreach (var p in entity.GetType().GetProperties().Where(p => !p.GetGetMethod().GetParameters().Any()))
             {
-                if (p != null && p.CanRead)
+                if ((p != null && p.CanRead) && (p.Name.ToLower() != pkName.ToLower()))
                 {
                     bool ignore = false;
 
@@ -93,7 +91,7 @@ namespace BiaORM
                     if (!ignore)
                     {
                         fields += "'" + p.Name.ToLower() + "',";
-                        string piValue = p.GetValue(p).ToString();
+                        string piValue = p.GetValue(entity, null).ToString();
 
                         if (Attribute.IsDefined(p, typeof(AttEncrypt)))
                         {

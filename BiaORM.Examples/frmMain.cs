@@ -1,7 +1,9 @@
-﻿using BiaORM.MySQL;
+﻿using BiaORM.Examples.Classes;
+using BiaORM.MySQL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -13,7 +15,7 @@ namespace BiaORM.Examples
 {
     public partial class frmMain : Form
     {
-        //IConnector connector = new MyConnection()
+        IConnector connector = null;
         public frmMain()
         {
             InitializeComponent();
@@ -21,7 +23,22 @@ namespace BiaORM.Examples
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
+            string connectionString = ConfigurationManager.AppSettings["BiaORM"];
+            connector = new MyConnection(connectionString);
+            Global.DB = (MyConnection)connector;
+            Global.DB.OnExecuteQuery += DB_OnExecuteQuery;
+        }
 
+        private void DB_OnExecuteQuery(string query)
+        {
+            txtOutput.AppendText(query);
+        }
+
+        private void BtnCreateSchool_Click(object sender, EventArgs e)
+        {
+            School school = new School();
+            school.Name = "Centro Educacional Nossa Senhora das Graças";
+            school.Create();
         }
     }
 }

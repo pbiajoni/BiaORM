@@ -140,17 +140,17 @@ namespace BiaORM.MySQL
             this.Fields.Add(field);
         }
 
-        public string InsertOrUpdate<T>()
+        public string InsertOrUpdate<T>(T entity)
         {
-            string pk = entityManager.GetPkValue<T>(this.Pk);
+            string pk = entityManager.GetPkValue<T>(this.Pk, entity);
 
-            if(String.IsNullOrEmpty(pk) || pk == "0")
+            if (String.IsNullOrEmpty(pk) || pk == "0")
             {
-                return MySQLConnection.ExecuteTransaction(entityManager.InsertQuery<T>(this._tableName), pk);
+                return MySQLConnection.ExecuteTransaction(entityManager.InsertQuery<T>(this._tableName, this.Pk, entity), pk);
             }
             else
             {
-                MySQLConnection.ExecuteTransaction(entityManager.UpdateQuery<T>(this._tableName, pk));
+                MySQLConnection.ExecuteTransaction(entityManager.UpdateQuery<T>(this._tableName, pk, entity));
                 return pk;
             }
 

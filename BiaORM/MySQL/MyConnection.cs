@@ -10,6 +10,9 @@ namespace BiaORM.MySQL
 {
     public class MyConnection : IConnector
     {
+        public delegate void OnExecuteQueryEventHandler(string query);
+        public event OnExecuteQueryEventHandler OnExecuteQuery;
+
         MySqlConnection MySQLConn = new MySqlConnection();
         MySqlTransaction MySQLTran;
 
@@ -87,6 +90,12 @@ namespace BiaORM.MySQL
         public DataTable Select(string cmdSQL)
         {
             Console.WriteLine(cmdSQL);
+
+            if(this.OnExecuteQuery != null)
+            {
+                this.OnExecuteQuery(cmdSQL);
+            }
+
             MySqlConnectionStringBuilder myCommString = new MySqlConnectionStringBuilder(_connectionString);
             MySqlConnection Conn = new MySqlConnection(myCommString.ConnectionString);
 
@@ -193,6 +202,12 @@ namespace BiaORM.MySQL
             {
                 OpenConnection();
                 Console.WriteLine(cmdSQL);
+
+                if (this.OnExecuteQuery != null)
+                {
+                    this.OnExecuteQuery(cmdSQL);
+                }
+
                 MySqlCommand c = new MySqlCommand(cmdSQL, MySQLConn);
                 c.CommandTimeout = 3600;
                 c.Transaction = MySQLTran;

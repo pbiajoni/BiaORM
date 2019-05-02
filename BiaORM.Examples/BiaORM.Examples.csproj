@@ -37,6 +37,7 @@
       <HintPath>..\BiaORM\bin\Debug\BiaORM.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -50,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Address.cs" />
+    <Compile Include="Classes\Global.cs" />
     <Compile Include="Classes\School.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
@@ -71,7 +73,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="DB.config" />
+    <None Include="DB.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
