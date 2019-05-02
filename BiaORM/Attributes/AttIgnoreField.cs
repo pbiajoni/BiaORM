@@ -9,7 +9,7 @@ namespace BiaORM.Attributes
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class AttIgnoreField : Attribute
     {
-        public QueryTypes QueryType;
+        public QueryTypes QueryType { get; set; }
         public AttIgnoreField()
         {
 

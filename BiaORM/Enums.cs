@@ -8,6 +8,7 @@ namespace BiaORM
 {
     public enum QueryTypes
     {
+        INSERT = 5,
         SELECT = 4,
         UPDATE = 3,
         DELETE = 2,
@@ -16,7 +17,8 @@ namespace BiaORM
     }
     public enum CryptTypes
     {
-        MD5 = 0
+        None = 0,
+        MD5 = 1
     }
 
     public enum OperatorTypes

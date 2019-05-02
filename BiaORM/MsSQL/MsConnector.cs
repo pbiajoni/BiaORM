@@ -24,7 +24,7 @@ namespace BiaORM.MsSQL
             throw new NotImplementedException();
         }
 
-        public int ExecuteTransaction(string cmdSQL, string fieldReturn)
+        public string ExecuteTransaction(string cmdSQL, string fieldReturn)
         {
             throw new NotImplementedException();
         }

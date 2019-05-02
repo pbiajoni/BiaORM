@@ -10,6 +10,7 @@ namespace BiaORM.MySQL
 {
     public class Table : ITable
     {
+        public string Pk { get; set; }
         EntityManager entityManager = new EntityManager();
         string _tableName;
         public string TableName { get { return this._tableName; } set { this._tableName = value; } }
@@ -22,7 +23,7 @@ namespace BiaORM.MySQL
         public Table(string tableName)
         {
             this._tableName = tableName;
-
+            this.Pk = "Id";
             if (this.Fields == null)
             {
                 this.Fields = new List<Field>();
@@ -33,6 +34,7 @@ namespace BiaORM.MySQL
         {
             this._tableName = tableName;
             this.MySQLConnection = mySQL;
+            this.Pk = "Id";
 
             if (this.Fields == null)
             {
@@ -47,6 +49,7 @@ namespace BiaORM.MySQL
             this._createInfo = createInfo;
             this._updateInfo = updateInfo;
             this._owner_id = owner_id;
+            this.Pk = "Id";
 
             if (this.Fields == null)
             {
@@ -54,9 +57,24 @@ namespace BiaORM.MySQL
             }
         }
 
-        public T FindOne<T>(int id)
+        public Table(MyConnection mySQL, string tableName, bool createInfo, bool updateInfo, int owner_id, string pk)
         {
-            Where where = new Where(OperatorTypes.Equal, "id", id.ToString());
+            this._tableName = tableName;
+            this.MySQLConnection = mySQL;
+            this._createInfo = createInfo;
+            this._updateInfo = updateInfo;
+            this._owner_id = owner_id;
+            this.Pk = pk;
+
+            if (this.Fields == null)
+            {
+                this.Fields = new List<Field>();
+            }
+        }
+
+        public T FindOne<T>(string pk)
+        {
+            Where where = new Where(OperatorTypes.Equal, this.Pk, pk);
             return this.FindOne<T>(where);
         }
 
@@ -120,6 +138,22 @@ namespace BiaORM.MySQL
             }
 
             this.Fields.Add(field);
+        }
+
+        public string InsertOrUpdate<T>()
+        {
+            string pk = entityManager.GetPkValue<T>(this.Pk);
+
+            if(String.IsNullOrEmpty(pk) || pk == "0")
+            {
+                return MySQLConnection.ExecuteTransaction(entityManager.InsertQuery<T>(this._tableName), pk);
+            }
+            else
+            {
+                MySQLConnection.ExecuteTransaction(entityManager.UpdateQuery<T>(this._tableName, pk));
+                return pk;
+            }
+
         }
     }
 }

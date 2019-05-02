@@ -223,19 +223,17 @@ namespace BiaORM.MySQL
         /// <param name="cmdSQL"></param>
         /// <param name="fieldReturn"></param>
         /// <returns></returns>
-        public int ExecuteTransaction(string cmdSQL, string fieldReturn)
+        public string ExecuteTransaction(string cmdSQL, string fieldReturn)
         {
             ExecuteTransaction(cmdSQL);
             DataTable dt = Select(getQuery(cmdSQL, fieldReturn));
 
             if (dt.Rows.Count > 0)
             {
-                return int.Parse(dt.Rows[0][fieldReturn].ToString());
+                return dt.Rows[0][fieldReturn].ToString();
             }
-            else
-            {
-                return -1;
-            }
+
+            return null;
         }
 
         public bool Exists(string tableName, string fieldName, string value, int Id = 0)

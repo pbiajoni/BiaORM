@@ -16,7 +16,7 @@ namespace BiaORM
         void RollBack();
         bool OpenConnection();
         void ExecuteTransaction(string cmdSQL);
-        int ExecuteTransaction(string cmdSQL, string fieldReturn);
+        string ExecuteTransaction(string cmdSQL, string fieldReturn);
         bool Exists(string tableName, string fieldName, string value, int Id = 0);
         bool HasRows(string cmdSQL);
     }
