@@ -25,8 +25,33 @@ namespace BiaORM.Examples
         {
             string connectionString = ConfigurationManager.AppSettings["BiaORM"];
             connector = new MyConnection(connectionString);
+
             Global.DB = (MyConnection)connector;
             Global.DB.OnExecuteQuery += DB_OnExecuteQuery;
+            Global.DB.OnOpenConnection += DB_OnOpenConnection;
+            Global.DB.OnCloseConnection += DB_OnCloseConnection;
+            Global.DB.OnCommited += DB_OnCommited;
+            Global.DB.OnRollBack += DB_OnRollBack;
+        }
+
+        private void DB_OnRollBack()
+        {
+            txtOutput.AppendText("Rollback" + Environment.NewLine);
+        }
+
+        private void DB_OnCommited()
+        {
+            txtOutput.AppendText("Comitado" + Environment.NewLine);
+        }
+
+        private void DB_OnCloseConnection()
+        {
+            txtOutput.AppendText("Conexão fechada" + Environment.NewLine);
+        }
+
+        private void DB_OnOpenConnection()
+        {
+            txtOutput.AppendText("Conexão aberta" + Environment.NewLine);
         }
 
         private void DB_OnExecuteQuery(string query)
@@ -39,7 +64,6 @@ namespace BiaORM.Examples
             try
             {
                 School school = new School();
-                school.Id = 1;
                 school.Name = "Centro Educacional Nossa Senhora das Graças 2";
                 school.CreateOrUpdate();
                 Global.DB.Commit();

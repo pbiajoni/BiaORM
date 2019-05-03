@@ -13,6 +13,18 @@ namespace BiaORM.MySQL
         public delegate void OnExecuteQueryEventHandler(string query);
         public event OnExecuteQueryEventHandler OnExecuteQuery;
 
+        public delegate void OnOpenConnectionEventHandler();
+        public event OnOpenConnectionEventHandler OnOpenConnection;
+
+        public delegate void OnCloseConnectionEventHandler();
+        public event OnCloseConnectionEventHandler OnCloseConnection;
+
+        public delegate void OnCommitedEventHandler();
+        public event OnCommitedEventHandler OnCommited;
+
+        public delegate void OnRollBackEventHandler();
+        public event OnRollBackEventHandler OnRollBack;
+
         MySqlConnection MySQLConn = new MySqlConnection();
         MySqlTransaction MySQLTran;
 
@@ -131,11 +143,17 @@ namespace BiaORM.MySQL
             if (MySQLConn.State != ConnectionState.Closed)
             {
                 MySQLTran.Commit();
+                Console.WriteLine("commited");
+
+                if (this.OnCommited != null)
+                {
+                    this.OnCommited();
+                }
             }
 
             if (MySQLConn.State != ConnectionState.Closed)
             {
-                MySQLConn.Close();
+                this.CloseConnection();
             }
         }
 
@@ -144,6 +162,12 @@ namespace BiaORM.MySQL
             if (MySQLConn.State != ConnectionState.Closed)
             {
                 MySQLConn.Close();
+                Console.WriteLine("conection closed");
+
+                if (this.OnCloseConnection != null)
+                {
+                    this.OnCloseConnection();
+                }
             }
         }
         public void RollBack()
@@ -152,11 +176,17 @@ namespace BiaORM.MySQL
             if (MySQLConn.State != ConnectionState.Closed)
             {
                 MySQLTran.Rollback();
+                Console.WriteLine("rollback");
+
+                if (this.OnRollBack != null)
+                {
+                    this.OnRollBack();
+                }
             }
 
             if (MySQLConn.State != ConnectionState.Closed)
             {
-                MySQLConn.Close();
+                this.CloseConnection();
             }
         }
 
@@ -179,6 +209,12 @@ namespace BiaORM.MySQL
 
                     if (MySQLConn.State == ConnectionState.Open)
                     {
+                        Console.WriteLine("connection is open");
+                        if(this.OnOpenConnection != null)
+                        {
+                            this.OnOpenConnection();
+                        }
+
                         return true;
                     }
                     else if (MySQLConn.State == ConnectionState.Closed)
@@ -254,13 +290,13 @@ namespace BiaORM.MySQL
             return null;
         }
 
-        public bool Exists(string tableName, string fieldName, string value, int Id = 0)
+        public bool Exists(string tableName, string fieldName, string value, string Id = null)
         {
             string stmt = "";
 
-            if (Id != 0)
+            if (Id != null)
             {
-                stmt = " and Id <> " + Id + " ";
+                stmt = " and Id <> '" + Id + "' ";
             }
 
             string cmd = "select Id from " + tableName + " where " + fieldName + " = '" + value + "' " + stmt + ";";

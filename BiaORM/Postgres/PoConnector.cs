@@ -29,7 +29,7 @@ namespace BiaORM.Postgres
             throw new NotImplementedException();
         }
 
-        public bool Exists(string tableName, string fieldName, string value, int Id = 0)
+        public bool Exists(string tableName, string fieldName, string value, string Id = null)
         {
             throw new NotImplementedException();
         }

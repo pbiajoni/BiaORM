@@ -109,6 +109,12 @@ namespace BiaORM.MySQL
         }
 
       
+        public bool Exists(string fieldName, string value, string pkId = null)
+        {
+            return MySQLConnection.Exists(this.TableName, fieldName, value, pkId);
+        }
+
+
         /// <summary>
         /// Returns the primary key value as string
         /// </summary>
