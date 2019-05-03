@@ -18,7 +18,7 @@ namespace BiaORM.Examples.Classes
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public void Create()
+        public void CreateOrUpdate()
         {
             this.table.InsertOrUpdate<School>(this);
         }

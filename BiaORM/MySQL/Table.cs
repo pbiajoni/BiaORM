@@ -108,38 +108,13 @@ namespace BiaORM.MySQL
 
         }
 
-        public bool FieldExists(string name)
-        {
-            return this.Fields.Any(x => x.Name == name);
-        }
-
-        public void AddField(string name, DateTime dateTime)
-        {
-            string date = dateTime.ToDBFormat();
-            this.AddField(name, date);
-        }
-
-        public void AddField(string name, decimal value)
-        {
-            string decimalValue = value.ToDB();
-            this.AddField(name, decimalValue);
-        }
-
-        public void AddField(string name, string value)
-        {
-            this.AddField(new Field(name, value));
-        }
-
-        public void AddField(Field field)
-        {
-            if (this.FieldExists(field.Name))
-            {
-                throw new Exception("O campo " + field.Name + " já existe");
-            }
-
-            this.Fields.Add(field);
-        }
-
+      
+        /// <summary>
+        /// Returns the primary key value as string
+        /// </summary>
+        /// <typeparam name="T">Object Class</typeparam>
+        /// <param name="entity">The Object</param>
+        /// <returns></returns>
         public string InsertOrUpdate<T>(T entity)
         {
             string pk = entityManager.GetPkValue<T>(this.PkName, entity);
@@ -150,7 +125,7 @@ namespace BiaORM.MySQL
             }
             else
             {
-                MySQLConnection.ExecuteTransaction(entityManager.UpdateQuery<T>(this._tableName, pk, entity));
+                MySQLConnection.ExecuteTransaction(entityManager.UpdateQuery<T>(this._tableName, this.PkName, entity));
                 return pk;
             }
 

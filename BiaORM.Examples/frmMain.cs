@@ -39,8 +39,9 @@ namespace BiaORM.Examples
             try
             {
                 School school = new School();
-                school.Name = "Centro Educacional Nossa Senhora das Graças";
-                school.Create();
+                school.Id = 1;
+                school.Name = "Centro Educacional Nossa Senhora das Graças 2";
+                school.CreateOrUpdate();
                 Global.DB.Commit();
             }
             catch (Exception er)
