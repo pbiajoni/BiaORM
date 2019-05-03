@@ -257,7 +257,7 @@ namespace BiaORM
 
                 foreach (var p in obj.GetType().GetProperties().Where(p => !p.GetGetMethod().GetParameters().Any()))
                 {
-                    if (p != null && p.CanWrite)
+                    if (p != null && p.CanWrite && (AcceptableTypes.IsAcceptable(p.PropertyType)))
                     {
                         string name = p.Name;
                         bool ignore = false;
@@ -280,10 +280,10 @@ namespace BiaORM
                         {
                             p.SetValue(obj, dataTable.Rows[i][p.Name]);
                         }
-                    }
-
-                    list.Add(obj);
+                    }                   
                 }
+
+                list.Add(obj);
             }
 
             return list;

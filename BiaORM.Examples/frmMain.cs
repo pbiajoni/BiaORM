@@ -63,7 +63,7 @@ namespace BiaORM.Examples
         {
             try
             {
-                
+
                 School school = new School();
                 school.Name = "Centro Educacional Nossa Senhora das Graças 2";
                 school.CreateOrUpdate();
@@ -74,7 +74,26 @@ namespace BiaORM.Examples
 
                 MessageBox.Show(er.Message);
             }
-            
+
+        }
+
+        private void BtnSelectQuery_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                List<School> schools = Global.DB.Query<School>("select * from schools;");
+
+                foreach (School school in schools)
+                {
+                    txtOutput.AppendText(school.Id + " " + school.Name + " " + " " + school.Owner + Environment.NewLine);
+                }
+            }
+            catch (Exception er)
+            {
+
+                MessageBox.Show(er.Message);
+            }
         }
     }
 }

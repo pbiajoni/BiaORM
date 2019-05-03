@@ -49,6 +49,11 @@ namespace BiaORM.MsSQL
             throw new NotImplementedException();
         }
 
+        public List<T> Query<T>(string cmd)
+        {
+            throw new NotImplementedException();
+        }
+
         public void RollBack()
         {
             throw new NotImplementedException();

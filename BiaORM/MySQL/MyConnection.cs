@@ -25,6 +25,7 @@ namespace BiaORM.MySQL
         public delegate void OnRollBackEventHandler();
         public event OnRollBackEventHandler OnRollBack;
 
+        EntityManager entityManager = new EntityManager();
         MySqlConnection MySQLConn = new MySqlConnection();
         MySqlTransaction MySQLTran;
 
@@ -313,6 +314,12 @@ namespace BiaORM.MySQL
             }
 
             return false;
+        }
+
+        public List<T> Query<T>(string cmd)
+        {
+            DataTable dt = this.Select(cmd);
+            return entityManager.CreateList<T>(dt, QueryTypes.SELECT);
         }
     }
 }

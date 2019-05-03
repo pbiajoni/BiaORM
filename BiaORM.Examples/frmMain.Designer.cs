@@ -30,6 +30,7 @@
         {
             this.txtOutput = new System.Windows.Forms.TextBox();
             this.btnCreateSchool = new System.Windows.Forms.Button();
+            this.btnSelectQuery = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtOutput
@@ -53,11 +54,22 @@
             this.btnCreateSchool.UseVisualStyleBackColor = true;
             this.btnCreateSchool.Click += new System.EventHandler(this.BtnCreateSchool_Click);
             // 
+            // btnSelectQuery
+            // 
+            this.btnSelectQuery.Location = new System.Drawing.Point(93, 28);
+            this.btnSelectQuery.Name = "btnSelectQuery";
+            this.btnSelectQuery.Size = new System.Drawing.Size(90, 23);
+            this.btnSelectQuery.TabIndex = 2;
+            this.btnSelectQuery.Text = "Select Query";
+            this.btnSelectQuery.UseVisualStyleBackColor = true;
+            this.btnSelectQuery.Click += new System.EventHandler(this.BtnSelectQuery_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1004, 661);
+            this.Controls.Add(this.btnSelectQuery);
             this.Controls.Add(this.btnCreateSchool);
             this.Controls.Add(this.txtOutput);
             this.Name = "frmMain";
@@ -73,6 +85,7 @@
 
         private System.Windows.Forms.TextBox txtOutput;
         private System.Windows.Forms.Button btnCreateSchool;
+        private System.Windows.Forms.Button btnSelectQuery;
     }
 }
 

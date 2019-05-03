@@ -77,6 +77,9 @@ namespace BiaORM.MySQL
             }
         }
 
+
+
+
         public T FindOne<T>(string pk)
         {
             Where where = new Where(OperatorTypes.Equal, this.PkName, pk);
