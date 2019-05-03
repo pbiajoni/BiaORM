@@ -90,7 +90,7 @@ namespace BiaORM
 
                     if (!ignore)
                     {
-                        fields += "'" + p.Name.ToLower() + "',";
+                        fields += p.Name.ToLower() + ",";
                         string piValue = p.GetValue(entity, null).ToString();
 
                         if (Attribute.IsDefined(p, typeof(AttEncrypt)))

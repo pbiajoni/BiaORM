@@ -67,6 +67,7 @@
     <Compile Include="MySQL\Field.cs" />
     <Compile Include="MySQL\MyConnection.cs" />
     <Compile Include="MySQL\Table.cs" />
+    <Compile Include="Postgres\PoConnector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

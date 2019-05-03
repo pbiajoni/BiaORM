@@ -10,7 +10,7 @@ namespace BiaORM.MySQL
 {
     public class Table : ITable
     {
-        public string Pk { get; set; }
+        public string PkName { get; set; }
         EntityManager entityManager = new EntityManager();
         string _tableName;
         public string TableName { get { return this._tableName; } set { this._tableName = value; } }
@@ -23,7 +23,7 @@ namespace BiaORM.MySQL
         public Table(string tableName)
         {
             this._tableName = tableName;
-            this.Pk = "Id";
+            this.PkName = "Id";
             if (this.Fields == null)
             {
                 this.Fields = new List<Field>();
@@ -34,7 +34,7 @@ namespace BiaORM.MySQL
         {
             this._tableName = tableName;
             this.MySQLConnection = mySQL;
-            this.Pk = "Id";
+            this.PkName = "Id";
 
             if (this.Fields == null)
             {
@@ -49,7 +49,7 @@ namespace BiaORM.MySQL
             this._createInfo = createInfo;
             this._updateInfo = updateInfo;
             this._owner_id = owner_id;
-            this.Pk = "Id";
+            this.PkName = "Id";
 
             if (this.Fields == null)
             {
@@ -64,7 +64,7 @@ namespace BiaORM.MySQL
             this._createInfo = createInfo;
             this._updateInfo = updateInfo;
             this._owner_id = owner_id;
-            this.Pk = pk;
+            this.PkName = pk;
 
             if (this.Fields == null)
             {
@@ -74,7 +74,7 @@ namespace BiaORM.MySQL
 
         public T FindOne<T>(string pk)
         {
-            Where where = new Where(OperatorTypes.Equal, this.Pk, pk);
+            Where where = new Where(OperatorTypes.Equal, this.PkName, pk);
             return this.FindOne<T>(where);
         }
 
@@ -142,11 +142,11 @@ namespace BiaORM.MySQL
 
         public string InsertOrUpdate<T>(T entity)
         {
-            string pk = entityManager.GetPkValue<T>(this.Pk, entity);
+            string pk = entityManager.GetPkValue<T>(this.PkName, entity);
 
             if (String.IsNullOrEmpty(pk) || pk == "0")
             {
-                return MySQLConnection.ExecuteTransaction(entityManager.InsertQuery<T>(this._tableName, this.Pk, entity), pk);
+                return MySQLConnection.ExecuteTransaction(entityManager.InsertQuery<T>(this._tableName, this.PkName, entity), this.PkName);
             }
             else
             {

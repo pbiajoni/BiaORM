@@ -31,14 +31,24 @@ namespace BiaORM.Examples
 
         private void DB_OnExecuteQuery(string query)
         {
-            txtOutput.AppendText(query);
+            txtOutput.AppendText(query + Environment.NewLine);
         }
 
         private void BtnCreateSchool_Click(object sender, EventArgs e)
         {
-            School school = new School();
-            school.Name = "Centro Educacional Nossa Senhora das Graças";
-            school.Create();
+            try
+            {
+                School school = new School();
+                school.Name = "Centro Educacional Nossa Senhora das Graças";
+                school.Create();
+                Global.DB.Commit();
+            }
+            catch (Exception er)
+            {
+
+                MessageBox.Show(er.Message);
+            }
+            
         }
     }
 }

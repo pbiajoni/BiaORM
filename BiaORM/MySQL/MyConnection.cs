@@ -57,12 +57,12 @@ namespace BiaORM.MySQL
 
             if (q[0].ToLower() == "insert")
             {
-                cmd = "select " + chavePrimaria + " from " + q[2] + " order by " + chavePrimaria + " DESC limit 1";
+                cmd = "select " + chavePrimaria + " from " + q[2] + " order by " + chavePrimaria + " DESC limit 1;";
             }
 
             if (q[0].ToLower() == "update")
             {
-                cmd = "select " + chavePrimaria + " from " + q[1] + " order by " + chavePrimaria + " DESC limit 1";
+                cmd = "select " + chavePrimaria + " from " + q[1] + " order by " + chavePrimaria + " DESC limit 1;";
             }
 
             return cmd;
@@ -115,6 +115,8 @@ namespace BiaORM.MySQL
             }
             catch (MySqlException er)
             {
+                this.RollBack();
+
                 if (Conn.State != ConnectionState.Closed)
                 {
                     Conn.Close();
@@ -215,6 +217,7 @@ namespace BiaORM.MySQL
             }
             catch (MySqlException mException)
             {
+                this.RollBack();
                 string errorMessage = ErrorsList.GetMessage(mException.Number);
                 Exception exception = null;
 
