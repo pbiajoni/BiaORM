@@ -32,7 +32,7 @@ namespace BiaORM
 
             foreach (var p in entity.GetType().GetProperties().Where(p => !p.GetGetMethod().GetParameters().Any()))
             {
-                if ((p != null && p.CanRead) && (p.Name.ToLower() != pkName.ToLower()))
+                if ((p != null && p.CanRead) && (p.Name.ToLower() != pkName.ToLower()) && (AcceptableTypes.IsAcceptable(p.PropertyType)))
                 {
                     bool ignore = false;
 
@@ -68,6 +68,7 @@ namespace BiaORM
             cmd = cmd.TrimEnd(',') + " where " + pkName + " = '" + GetPkValue<T>(pkName, entity) + "';";
             return cmd;
         }
+
         public string InsertQuery<T>(string tableName, string pkName, T entity)
         {
             string cmd = "insert into " + tableName + " (";
@@ -76,7 +77,7 @@ namespace BiaORM
 
             foreach (var p in entity.GetType().GetProperties().Where(p => !p.GetGetMethod().GetParameters().Any()))
             {
-                if ((p != null && p.CanRead) && (p.Name.ToLower() != pkName.ToLower()))
+                if ((p != null && p.CanRead) && (p.Name.ToLower() != pkName.ToLower()) && (AcceptableTypes.IsAcceptable(p.PropertyType)))
                 {
                     bool ignore = false;
 
@@ -114,6 +115,65 @@ namespace BiaORM
             values = values.TrimEnd(',');
 
             cmd += fields + ") values (" + values + ");";
+
+            return cmd;
+        }
+
+
+        public string HasOneQuery<T>(string tableName, string FkFieldName, T entity, Type targetEntity, string targetTableName, string targetPkName)
+        {
+            object target = Activator.CreateInstance(targetEntity);
+
+            string cmd = "select ";
+            string fields = "";
+            string targetFields = "";
+
+
+            foreach (var p in targetEntity.GetProperties().Where(p => !p.GetGetMethod().GetParameters().Any()))
+            {
+                if ((p != null && p.CanRead) && (AcceptableTypes.IsAcceptable(p.PropertyType)))
+                {
+                    bool ignore = false;
+
+                    if (Attribute.IsDefined(p, typeof(AttIgnoreField)))
+                    {
+                        if (GetIgnoreFieldQueryType(p) == QueryTypes.SELECT)
+                        {
+                            ignore = true;
+                        }
+                    }
+
+                    if (!ignore)
+                    {
+                        targetFields += targetTableName + "." + p.Name.ToLower() + ",";
+                    }
+                }
+            }
+
+            targetFields = targetFields.TrimEnd(',');
+
+            foreach (var p in entity.GetType().GetProperties().Where(p => !p.GetGetMethod().GetParameters().Any()))
+            {
+                if ((p != null && p.CanRead) && (AcceptableTypes.IsAcceptable(p.PropertyType)))
+                {
+                    bool ignore = false;
+
+                    if (Attribute.IsDefined(p, typeof(AttIgnoreField)))
+                    {
+                        if (GetIgnoreFieldQueryType(p) == QueryTypes.SELECT)
+                        {
+                            ignore = true;
+                        }
+                    }
+
+                    if (!ignore)
+                    {
+                        fields += p.Name.ToLower() + ",";
+                    }
+                }
+            }
+
+            cmd += fields + targetFields + " from " + tableName + " join " + targetTableName + " on " + tableName + "." + FkFieldName + "=" + targetTableName + "." + targetPkName + " ;";
 
             return cmd;
         }

@@ -1,4 +1,5 @@
 ﻿using BiaORM.Clauses;
+using BiaORM.Relationship;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,11 +11,13 @@ namespace BiaORM.MySQL
 {
     public class Table : ITable
     {
+
+        public List<HasOne> HasOneRelations { get; internal set; }
+
         public string PkName { get; set; }
         EntityManager entityManager = new EntityManager();
         string _tableName;
         public string TableName { get { return this._tableName; } set { this._tableName = value; } }
-        public List<Field> Fields { get; internal set; }
         public MyConnection MySQLConnection { get; set; }
         bool _createInfo;
         bool _updateInfo;
@@ -24,9 +27,10 @@ namespace BiaORM.MySQL
         {
             this._tableName = tableName;
             this.PkName = "Id";
-            if (this.Fields == null)
+
+            if (this.HasOneRelations == null)
             {
-                this.Fields = new List<Field>();
+                this.HasOneRelations = new List<HasOne>();
             }
         }
 
@@ -36,9 +40,9 @@ namespace BiaORM.MySQL
             this.MySQLConnection = mySQL;
             this.PkName = "Id";
 
-            if (this.Fields == null)
+            if (this.HasOneRelations == null)
             {
-                this.Fields = new List<Field>();
+                this.HasOneRelations = new List<HasOne>();
             }
         }
 
@@ -51,10 +55,11 @@ namespace BiaORM.MySQL
             this._owner_id = owner_id;
             this.PkName = "Id";
 
-            if (this.Fields == null)
+            if (this.HasOneRelations == null)
             {
-                this.Fields = new List<Field>();
+                this.HasOneRelations = new List<HasOne>();
             }
+
         }
 
         public Table(MyConnection mySQL, string tableName, bool createInfo, bool updateInfo, int owner_id, string pk)
@@ -66,9 +71,9 @@ namespace BiaORM.MySQL
             this._owner_id = owner_id;
             this.PkName = pk;
 
-            if (this.Fields == null)
+            if (this.HasOneRelations == null)
             {
-                this.Fields = new List<Field>();
+                this.HasOneRelations = new List<HasOne>();
             }
         }
 
@@ -85,11 +90,11 @@ namespace BiaORM.MySQL
             return this.FindOne<T>(wheres);
         }
 
-        public T FindOne<T>(List<Where> clauses)
+        public T FindOne<T>(List<Where> wheres)
         {
             string str_where = "";
 
-            foreach (Where where in clauses)
+            foreach (Where where in wheres)
             {
                 string query = where.Query;
                 str_where += query;
@@ -108,7 +113,7 @@ namespace BiaORM.MySQL
 
         }
 
-      
+
         public bool Exists(string fieldName, string value, string pkId = null)
         {
             return MySQLConnection.Exists(this.TableName, fieldName, value, pkId);
@@ -136,5 +141,6 @@ namespace BiaORM.MySQL
             }
 
         }
+       
     }
 }

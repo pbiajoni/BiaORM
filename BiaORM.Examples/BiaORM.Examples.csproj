@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Address.cs" />
+    <Compile Include="Classes\Addresses.cs" />
     <Compile Include="Classes\Global.cs" />
     <Compile Include="Classes\School.cs" />
     <Compile Include="frmMain.cs">

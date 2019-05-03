@@ -9,10 +9,10 @@ namespace BiaORM.Examples.Classes
 {
     public class School
     {
-        ITable table = new Table(Global.DB, "schools");
+        public ITable Table { get; set; }
         public School()
         {
-
+            this.Table = new Table(Global.DB, "schools");
         }
 
         public int Id { get; set; }
@@ -20,7 +20,7 @@ namespace BiaORM.Examples.Classes
 
         public void CreateOrUpdate()
         {
-            this.table.InsertOrUpdate<School>(this);
+            this.Table.InsertOrUpdate<School>(this);
         }
     }
 }

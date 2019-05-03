@@ -63,6 +63,7 @@ namespace BiaORM.Examples
         {
             try
             {
+                
                 School school = new School();
                 school.Name = "Centro Educacional Nossa Senhora das Graças 2";
                 school.CreateOrUpdate();
