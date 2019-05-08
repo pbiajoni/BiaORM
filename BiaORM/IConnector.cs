@@ -21,5 +21,9 @@ namespace BiaORM
         bool HasRows(string cmdSQL);
         List<T> Query<T>(string cmd);
         ITable GetTable(string tableName);
+        void AddTable(string tableName);
+        void AddTable(string tableName, bool createInfo, bool updateInfo, int owner_id);
+        void AddTable(string tableName, bool createInfo, bool updateInfo, int owner_id, string pk);
+
     }
 }

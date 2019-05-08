@@ -9,6 +9,21 @@ namespace BiaORM.MsSQL
 {
     public class MsConnector : IConnector
     {
+        public void AddTable(string tableName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddTable(string tableName, bool createInfo, bool updateInfo, int owner_id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddTable(string tableName, bool createInfo, bool updateInfo, int owner_id, string pk)
+        {
+            throw new NotImplementedException();
+        }
+
         public void CloseConnection()
         {
             throw new NotImplementedException();
