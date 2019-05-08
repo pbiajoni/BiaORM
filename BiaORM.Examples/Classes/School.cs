@@ -12,7 +12,7 @@ namespace BiaORM.Examples.Classes
         public ITable Table { get; set; }
         public School()
         {
-            this.Table = new Table(Global.DB, "schools");
+            this.Table = Global.DB.GetTable("schools");
         }
 
         public int Id { get; set; }

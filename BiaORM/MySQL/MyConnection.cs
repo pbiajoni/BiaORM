@@ -71,25 +71,41 @@ namespace BiaORM.MySQL
             CreateTableList();
         }
 
+        void ValidateTable(string tableName)
+        {
+            if (this.Tables.Any(x => x.TableName == tableName))
+            {
+                throw new Exception("Table " + tableName + " already exists in table list");
+            }
+        }
+
         public ITable GetTable(string tableName)
         {
             return (Table)this.Tables.Where(x => x.TableName == tableName).FirstOrDefault();
         }
 
+        public void AddTable(Table table)
+        {
+            ValidateTable(table.TableName);
+            this.Tables.Add(table);
+        }
         public void AddTable(string tableName)
         {
+            ValidateTable(tableName);
             Table table = new Table(this, tableName);
             this.Tables.Add(table);
         }
 
         public void AddTable(string tableName, bool createInfo, bool updateInfo, int owner_id)
         {
+            ValidateTable(tableName);
             Table table = new Table(this, tableName, createInfo, updateInfo, owner_id);
             this.Tables.Add(table);
         }
 
         public void AddTable(string tableName, bool createInfo, bool updateInfo, int owner_id, string pk)
         {
+            ValidateTable(tableName);
             Table table = new Table(this, tableName, createInfo, updateInfo, owner_id, pk);
             this.Tables.Add(table);
         }

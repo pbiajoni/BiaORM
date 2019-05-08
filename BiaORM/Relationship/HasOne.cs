@@ -8,17 +8,20 @@ namespace BiaORM.Relationship
 {
     public class HasOne
     {
-        /// <summary>
-        /// Nome da coluna local que tem a Id da referência
-        /// </summary>
-        public string LocalRelationName { get; set; }
-        /// <summary>
-        /// Nome da tabela remota
-        /// </summary>
-        public string TagetTableName { get; set; }
-        /// <summary>
-        /// Alias da tabela remota
-        /// </summary>
+        public HasOne(ITable table, string foreignKey)
+        {
+            Table = table ?? throw new ArgumentNullException(nameof(table));
+            ForeignKey = foreignKey ?? throw new ArgumentNullException(nameof(foreignKey));
+            this.As = null;
+        }
+
+        public HasOne(ITable table, string foreignKey, string @as) : this(table, foreignKey)
+        {
+            As = @as ?? throw new ArgumentNullException(nameof(@as));
+        }
+
+        public ITable Table { get; set; }
+        public string ForeignKey { get; set; }
         public string As { get; set; }
     }
 }

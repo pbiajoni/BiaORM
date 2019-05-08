@@ -33,7 +33,9 @@ namespace BiaORM.Examples
             Global.DB.OnCommited += DB_OnCommited;
             Global.DB.OnRollBack += DB_OnRollBack;
 
-            //Global.DB.Tables.Add(new Table())
+            Global.DB.AddTable("schools");
+            
+            Global.DB.AddTable("address");
 
         }
 

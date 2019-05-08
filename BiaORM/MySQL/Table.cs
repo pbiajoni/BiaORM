@@ -1,4 +1,5 @@
 ﻿using BiaORM.Clauses;
+using BiaORM.Relationship;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -20,10 +21,17 @@ namespace BiaORM.MySQL
         bool _updateInfo;
         int _owner_id;
 
+        public List<HasOne> HasOnes { get; set; }
+
         public Table(string tableName)
         {
             this._tableName = tableName;
             this.PkName = "Id";
+
+            if (this.HasOnes == null)
+            {
+                this.HasOnes = new List<HasOne>();
+            }
         }
 
         public Table(MyConnection mySQL, string tableName)
@@ -31,6 +39,11 @@ namespace BiaORM.MySQL
             this._tableName = tableName;
             this.MySQLConnection = mySQL;
             this.PkName = "Id";
+
+            if (this.HasOnes == null)
+            {
+                this.HasOnes = new List<HasOne>();
+            }
         }
 
         public Table(MyConnection mySQL, string tableName, bool createInfo, bool updateInfo, int owner_id)
@@ -41,6 +54,11 @@ namespace BiaORM.MySQL
             this._updateInfo = updateInfo;
             this._owner_id = owner_id;
             this.PkName = "Id";
+
+            if (this.HasOnes == null)
+            {
+                this.HasOnes = new List<HasOne>();
+            }
         }
 
         public Table(MyConnection mySQL, string tableName, bool createInfo, bool updateInfo, int owner_id, string pk)
@@ -51,6 +69,11 @@ namespace BiaORM.MySQL
             this._updateInfo = updateInfo;
             this._owner_id = owner_id;
             this.PkName = pk;
+
+            if (this.HasOnes == null)
+            {
+                this.HasOnes = new List<HasOne>();
+            }
         }
 
         public T FindOne<T>(string pk)
@@ -117,6 +140,6 @@ namespace BiaORM.MySQL
             }
 
         }
-       
+
     }
 }
