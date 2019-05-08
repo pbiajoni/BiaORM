@@ -1,5 +1,6 @@
 ﻿using BiaORM.Examples.Classes;
 using BiaORM.MySQL;
+using BiaORM.Relationship;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -33,10 +34,14 @@ namespace BiaORM.Examples
             Global.DB.OnCommited += DB_OnCommited;
             Global.DB.OnRollBack += DB_OnRollBack;
 
-            Global.DB.AddTable("schools");
-            
-            Global.DB.AddTable("address");
 
+            const string tableSchoolName = "schools";
+            const string tableAddressName = "addresses";
+
+            Global.DB.AddTable(tableSchoolName);
+            Global.DB.AddTable(tableAddressName);
+
+            ((Table)Global.DB.GetTable(tableSchoolName)).HasOnes.Add(new HasOne(Global.DB.GetTable(tableSchoolName), "address_id", "address"));
         }
 
         private void DB_OnRollBack()

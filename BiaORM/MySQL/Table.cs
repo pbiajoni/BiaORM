@@ -118,6 +118,10 @@ namespace BiaORM.MySQL
             return MySQLConnection.Exists(this.TableName, fieldName, value, pkId);
         }
 
+        public List<T> FindAll<T>()
+        {
+
+        }
 
         /// <summary>
         /// Returns the primary key value as string
