@@ -54,6 +54,7 @@
     <Compile Include="Classes\Addresses.cs" />
     <Compile Include="Classes\Global.cs" />
     <Compile Include="Classes\School.cs" />
+    <Compile Include="Classes\Tables.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>

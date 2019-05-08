@@ -20,5 +20,6 @@ namespace BiaORM
         string ExecuteTransaction(string cmdSQL, string fieldReturn);
         bool HasRows(string cmdSQL);
         List<T> Query<T>(string cmd);
+        ITable GetTable(string tableName);
     }
 }

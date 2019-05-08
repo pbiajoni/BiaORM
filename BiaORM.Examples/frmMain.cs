@@ -32,6 +32,9 @@ namespace BiaORM.Examples
             Global.DB.OnCloseConnection += DB_OnCloseConnection;
             Global.DB.OnCommited += DB_OnCommited;
             Global.DB.OnRollBack += DB_OnRollBack;
+
+            //Global.DB.Tables.Add(new Table())
+
         }
 
         private void DB_OnRollBack()

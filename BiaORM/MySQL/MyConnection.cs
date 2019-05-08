@@ -30,6 +30,9 @@ namespace BiaORM.MySQL
         MySqlTransaction MySQLTran;
 
         private string _connectionString;
+
+        public List<Table> Tables { get; internal set; }
+
         public string Username { get; set; }
         public string Password { get; set; }
         public int Port { get; set; }
@@ -44,6 +47,8 @@ namespace BiaORM.MySQL
         public MyConnection(string connectionString)
         {
             this._connectionString = connectionString;
+
+            CreateTableList();
         }
         public MyConnection(string username, string password, string server, string database)
         {
@@ -52,6 +57,8 @@ namespace BiaORM.MySQL
             Port = 3306;
             Server = server ?? throw new ArgumentNullException(nameof(server));
             Database = database ?? throw new ArgumentNullException(nameof(database));
+
+            CreateTableList();
         }
         public MyConnection(string username, string password, int port, string server, string database)
         {
@@ -60,6 +67,39 @@ namespace BiaORM.MySQL
             Port = port;
             Server = server ?? throw new ArgumentNullException(nameof(server));
             Database = database ?? throw new ArgumentNullException(nameof(database));
+
+            CreateTableList();
+        }
+
+        public ITable GetTable(string tableName)
+        {
+            return (Table)this.Tables.Where(x => x.TableName == tableName).FirstOrDefault();
+        }
+
+        public void AddTable(string tableName)
+        {
+            Table table = new Table(this, tableName);
+            this.Tables.Add(table);
+        }
+
+        public void AddTable(string tableName, bool createInfo, bool updateInfo, int owner_id)
+        {
+            Table table = new Table(this, tableName, createInfo, updateInfo, owner_id);
+            this.Tables.Add(table);
+        }
+
+        public void AddTable(string tableName, bool createInfo, bool updateInfo, int owner_id, string pk)
+        {
+            Table table = new Table(this, tableName, createInfo, updateInfo, owner_id, pk);
+            this.Tables.Add(table);
+        }
+
+        void CreateTableList()
+        {
+            if (this.Tables == null)
+            {
+                this.Tables = new List<Table>();
+            }
         }
 
         string getQuery(string cmdSQL, string chavePrimaria)
@@ -104,7 +144,7 @@ namespace BiaORM.MySQL
         {
             Console.WriteLine(cmdSQL);
 
-            if(this.OnExecuteQuery != null)
+            if (this.OnExecuteQuery != null)
             {
                 this.OnExecuteQuery(cmdSQL);
             }
@@ -211,7 +251,7 @@ namespace BiaORM.MySQL
                     if (MySQLConn.State == ConnectionState.Open)
                     {
                         Console.WriteLine("connection is open");
-                        if(this.OnOpenConnection != null)
+                        if (this.OnOpenConnection != null)
                         {
                             this.OnOpenConnection();
                         }

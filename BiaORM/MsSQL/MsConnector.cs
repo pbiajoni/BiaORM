@@ -34,6 +34,11 @@ namespace BiaORM.MsSQL
             throw new NotImplementedException();
         }
 
+        public ITable GetTable(string tableName)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool HasRows(string cmdSQL)
         {
             throw new NotImplementedException();
