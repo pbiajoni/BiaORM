@@ -1,5 +1,4 @@
 ﻿using BiaORM.Clauses;
-using BiaORM.Relationship;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,8 +10,6 @@ namespace BiaORM.MySQL
 {
     public class Table : ITable
     {
-
-        public List<HasOne> HasOneRelations { get; internal set; }
 
         public string PkName { get; set; }
         EntityManager entityManager = new EntityManager();
@@ -27,11 +24,6 @@ namespace BiaORM.MySQL
         {
             this._tableName = tableName;
             this.PkName = "Id";
-
-            if (this.HasOneRelations == null)
-            {
-                this.HasOneRelations = new List<HasOne>();
-            }
         }
 
         public Table(MyConnection mySQL, string tableName)
@@ -39,11 +31,6 @@ namespace BiaORM.MySQL
             this._tableName = tableName;
             this.MySQLConnection = mySQL;
             this.PkName = "Id";
-
-            if (this.HasOneRelations == null)
-            {
-                this.HasOneRelations = new List<HasOne>();
-            }
         }
 
         public Table(MyConnection mySQL, string tableName, bool createInfo, bool updateInfo, int owner_id)
@@ -54,12 +41,6 @@ namespace BiaORM.MySQL
             this._updateInfo = updateInfo;
             this._owner_id = owner_id;
             this.PkName = "Id";
-
-            if (this.HasOneRelations == null)
-            {
-                this.HasOneRelations = new List<HasOne>();
-            }
-
         }
 
         public Table(MyConnection mySQL, string tableName, bool createInfo, bool updateInfo, int owner_id, string pk)
@@ -70,11 +51,6 @@ namespace BiaORM.MySQL
             this._updateInfo = updateInfo;
             this._owner_id = owner_id;
             this.PkName = pk;
-
-            if (this.HasOneRelations == null)
-            {
-                this.HasOneRelations = new List<HasOne>();
-            }
         }
 
 
